@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -54,11 +55,21 @@ fun ListaDeTarefaComposeTheme(
         else -> LightColorScheme
     }
     val view = LocalView.current
+
+    val systemUiController = rememberSystemUiController()
+    val statusBarColor = Blue
+
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
             window.statusBarColor = colorScheme.primary.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+
+            // Usar systemUiControler para definir a cor da status bar
+            systemUiController.setStatusBarColor(
+                color = statusBarColor,
+                darkIcons = darkTheme
+            )
         }
     }
 
