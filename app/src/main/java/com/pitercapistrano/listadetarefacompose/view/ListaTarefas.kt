@@ -43,7 +43,7 @@ fun ListaTarefas(
         
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { navController.navigate("salvarTarefa") },
+                onClick = { navController.navigate("salvarTarefas") },
 
                 containerColor = Blue,
                 contentColor = Color.White,
