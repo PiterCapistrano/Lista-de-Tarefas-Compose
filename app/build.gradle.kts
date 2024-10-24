@@ -69,6 +69,8 @@ dependencies {
 
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.30.1")
 
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+
     // Navigation
     val navVersion = "2.8.3"
     implementation("androidx.navigation:navigation-compose:$navVersion")

@@ -2,6 +2,8 @@ package com.pitercapistrano.listadetarefacompose.view
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -22,6 +24,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.pitercapistrano.listadetarefacompose.R
+import com.pitercapistrano.listadetarefacompose.itemLista.TarefaItem
+import com.pitercapistrano.listadetarefacompose.model.Tarefa
 import com.pitercapistrano.listadetarefacompose.ui.theme.Blue
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -58,9 +62,39 @@ fun ListaTarefas(
 
         containerColor = Color.Black
     ) {
-        Column(
+
+        val listaTarefas: MutableList<Tarefa> = mutableListOf(
+            Tarefa(
+                "Malhar",
+                "Triceps e Peito",
+                3
+            ),
+
+            Tarefa(
+                "Ir ao mercado",
+                "Comprar comida",
+                1
+            ),
+
+            Tarefa(
+                "Estudar",
+                "Programação",
+                2
+            ),
+
+            Tarefa(
+                "Sair",
+                "Sair para beber",
+                0
+            )
+        )
+
+        LazyColumn(
             modifier = Modifier.padding(it)
         ) {
+            itemsIndexed(listaTarefas){position,_ ->
+                TarefaItem(position, listaTarefas)
+            }
 
         }
     }
