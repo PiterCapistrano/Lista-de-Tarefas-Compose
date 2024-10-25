@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.pitercapistrano.listadetarefacompose" />
+                  <option name="mobileSdkAppId" value="1:755571819699:android:e508ecfff2dead0a759cc6" />
+                  <option name="projectId" value="lista-de-tarefas-compose-1b3da" />
+                  <option name="projectNumber" value="755571819699" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
