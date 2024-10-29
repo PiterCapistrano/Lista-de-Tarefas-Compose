@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("com.google.gms.google-services")
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -85,4 +87,11 @@ dependencies {
     // Navigation
     val navVersion = "2.8.3"
     implementation("androidx.navigation:navigation-compose:$navVersion")
+
+    // Hilt dependencies
+    val hiltVersion = "2.49"
+    implementation("com.google.dagger:hilt-android:$hiltVersion")
+    kapt("com.google.dagger:hilt-compiler:$hiltVersion")
+
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 }

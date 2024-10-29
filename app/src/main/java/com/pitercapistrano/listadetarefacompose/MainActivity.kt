@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.pitercapistrano.listadetarefacompose.ui.theme.ListaDeTarefaComposeTheme
 import com.pitercapistrano.listadetarefacompose.view.ListaTarefas
+import com.pitercapistrano.listadetarefacompose.view.Login
 import com.pitercapistrano.listadetarefacompose.view.SalvarTarefas
 
 class MainActivity : ComponentActivity() {
@@ -18,7 +19,14 @@ class MainActivity : ComponentActivity() {
                 
                 val navController = rememberNavController()
                 
-                NavHost(navController = navController, startDestination =  "listaTarefas"){
+                NavHost(navController = navController, startDestination =  "login"){
+
+                    composable(
+                        route = "login"
+                    ){
+                        Login(navController)
+                    }
+
                     composable(
                         route = "listaTarefas"
                     ){

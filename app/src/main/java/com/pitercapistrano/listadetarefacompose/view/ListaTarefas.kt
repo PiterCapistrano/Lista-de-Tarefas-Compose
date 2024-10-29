@@ -1,6 +1,5 @@
 package com.pitercapistrano.listadetarefacompose.view
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -27,7 +26,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.pitercapistrano.listadetarefacompose.R
 import com.pitercapistrano.listadetarefacompose.itemLista.TarefaItem
-import com.pitercapistrano.listadetarefacompose.model.Tarefa
 import com.pitercapistrano.listadetarefacompose.repositorio.TarefasRepositorio
 import com.pitercapistrano.listadetarefacompose.ui.theme.Blue
 
