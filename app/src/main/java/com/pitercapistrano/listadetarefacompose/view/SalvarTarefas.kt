@@ -166,7 +166,7 @@ fun SalvarTarefas(
                                Prio.ALTA -> Constantes.PRIORIDADE_ALTA
                                else -> Constantes.SEM_PRIORIDADE
                            }
-                           tarefasRepositorio.salvarTarefa(inputTitulo, inputDescricao, prioridade)
+                           tarefasRepositorio.salvarTarefa(inputTitulo, inputDescricao, prioridade, false)
                        }
                    }
                     scope.launch(Dispatchers.Main) {

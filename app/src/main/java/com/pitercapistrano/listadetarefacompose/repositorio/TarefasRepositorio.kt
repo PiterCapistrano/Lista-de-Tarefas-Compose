@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.Flow
 class TarefasRepositorio() {
 
     private val dataSource = DataSource()
-    fun salvarTarefa(tarefa: String, descricao: String, prioridade: Int){
-        dataSource.salvarTarefa(tarefa, descricao, prioridade)
+    fun salvarTarefa(tarefa: String, descricao: String, prioridade: Int, checkTarefas: Boolean){
+        dataSource.salvarTarefa(tarefa, descricao, prioridade, checkTarefas)
     }
 
     fun recuperarTarefas(): Flow<MutableList<Tarefa>>{
@@ -18,5 +18,9 @@ class TarefasRepositorio() {
 
     fun deletarTarefa(tarefa: String){
         dataSource.deletarTarefa(tarefa)
+    }
+
+    fun atualizarTarefa(tarefa: String, checkTarefa: Boolean){
+        dataSource.atualizarTarefa(tarefa, checkTarefa)
     }
 }

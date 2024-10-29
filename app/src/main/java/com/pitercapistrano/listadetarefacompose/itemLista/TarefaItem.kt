@@ -50,13 +50,14 @@ fun TarefaItem(
     val tituloTarefa = listaTarefas[position].tarefa
     val descricaoTarefa = listaTarefas[position].descricao
     val prioridadeTarefa = listaTarefas[position].prioridade
+    val tarefaConcluida = listaTarefas[position].checkTarefa
 
     val scope = rememberCoroutineScope()
 
     val tarefasRepositorio = TarefasRepositorio()
 
     var isChecked by remember {
-        mutableStateOf(false)
+        mutableStateOf(tarefaConcluida)
     }
 
     fun dialogDeletar(){
@@ -78,7 +79,7 @@ fun TarefaItem(
             .show()
     }
 
-    var nivelPrioridade: String = when(prioridadeTarefa){
+    val nivelPrioridade: String = when(prioridadeTarefa){
         0 -> {"Sem Prioridade"}
         1 -> {"Baixa Prioridade"}
         2 -> {"Média Prioridade"}
@@ -168,15 +169,25 @@ fun TarefaItem(
             }
 
             Checkbox(
-                checked = isChecked,
+                checked = isChecked!!,
                 onCheckedChange = {
 
                     isChecked = it
 
-                    if (isChecked){
-                        isChecked = true
-                    }else{
-                        isChecked = false
+                    scope.launch(Dispatchers.IO){
+                        if (isChecked!!){
+                            isChecked = true
+                            tarefasRepositorio.atualizarTarefa(tituloTarefa!!, true)
+                        }else{
+                            tarefasRepositorio.atualizarTarefa(tituloTarefa!!, false)
+                        }
+                    }
+                    scope.launch(Dispatchers.Main){
+                        if (isChecked!!){
+                            Toast.makeText(context, "Tarefa marcada como concluída!", Toast.LENGTH_SHORT).show()
+                        }else{
+                            Toast.makeText(context, "Tarefa desmarcada!", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 },
                 modifier = Modifier.constrainAs(checkTarefa){
@@ -186,7 +197,8 @@ fun TarefaItem(
                     bottom.linkTo(parent.bottom, 10.dp)
                 },
                 colors = CheckboxDefaults.colors(
-                    checkedColor = Green
+                    checkedColor = Green,
+                    uncheckedColor = Color.Black
                 )
             )
         }
