@@ -34,8 +34,6 @@ fun ListaTarefas(
     navController: NavController
 ){
 
-
-
     Scaffold(
         topBar = {
             TopAppBar(
@@ -65,38 +63,11 @@ fun ListaTarefas(
         containerColor = Color.Black
     ) {
 
-        val listaTarefas: MutableList<Tarefa> = mutableListOf(
-            Tarefa(
-                "Malhar",
-                "Triceps e Peito",
-                3
-            ),
-
-            Tarefa(
-                "Ir ao mercado",
-                "Comprar comida",
-                1
-            ),
-
-            Tarefa(
-                "Estudar",
-                "Programação",
-                2
-            ),
-
-            Tarefa(
-                "Sair",
-                "Sair para beber",
-                0
-            )
-        )
 
         LazyColumn(
             modifier = Modifier.padding(it)
         ) {
-            itemsIndexed(listaTarefas){position,_ ->
-                TarefaItem(position, listaTarefas)
-            }
+
 
         }
     }
