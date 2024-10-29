@@ -35,13 +35,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.pitercapistrano.listadetarefacompose.componentes.Botao
 import com.pitercapistrano.listadetarefacompose.componentes.EditText
 import com.pitercapistrano.listadetarefacompose.constantes.Constantes
 import com.pitercapistrano.listadetarefacompose.enumclass.Prio
-import com.pitercapistrano.listadetarefacompose.repositorio.TarefasRepositorio
 import com.pitercapistrano.listadetarefacompose.ui.theme.Blue
 import com.pitercapistrano.listadetarefacompose.ui.theme.DarkGreen
 import com.pitercapistrano.listadetarefacompose.ui.theme.DarkRed
@@ -49,13 +49,15 @@ import com.pitercapistrano.listadetarefacompose.ui.theme.DarkYellow
 import com.pitercapistrano.listadetarefacompose.ui.theme.Green
 import com.pitercapistrano.listadetarefacompose.ui.theme.Red
 import com.pitercapistrano.listadetarefacompose.ui.theme.Yellow
+import com.pitercapistrano.listadetarefacompose.viewModel.TarefasViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SalvarTarefas(
-    navController: NavController
+    navController: NavController,
+    viewModel: TarefasViewModel = hiltViewModel()
 ){
     var inputTitulo by remember {
         mutableStateOf("")
@@ -70,8 +72,6 @@ fun SalvarTarefas(
     val scope = rememberCoroutineScope()
 
     val context = LocalContext.current
-
-    val tarefasRepositorio = TarefasRepositorio()
 
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -166,7 +166,7 @@ fun SalvarTarefas(
                                Prio.ALTA -> Constantes.PRIORIDADE_ALTA
                                else -> Constantes.SEM_PRIORIDADE
                            }
-                           tarefasRepositorio.salvarTarefa(inputTitulo, inputDescricao, prioridade, false)
+                           viewModel.salvarTarefa(inputTitulo, inputDescricao, prioridade, false)
                        }
                    }
                     scope.launch(Dispatchers.Main) {

@@ -22,22 +22,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.pitercapistrano.listadetarefacompose.R
 import com.pitercapistrano.listadetarefacompose.itemLista.TarefaItem
-import com.pitercapistrano.listadetarefacompose.repositorio.TarefasRepositorio
 import com.pitercapistrano.listadetarefacompose.ui.theme.Blue
+import com.pitercapistrano.listadetarefacompose.viewModel.TarefasViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListaTarefas(
-    navController: NavController
+    navController: NavController,
+    viewModel: TarefasViewModel = hiltViewModel()
 ){
 
-    val tarefasRepositorio = TarefasRepositorio()
-
     val context = LocalContext.current
+
+    val listaTarefas = viewModel.recuperarTarefas().collectAsState(mutableListOf()).value
 
     Scaffold(
         topBar = {
@@ -67,14 +69,11 @@ fun ListaTarefas(
 
         containerColor = Color.Black
     ) {
-
-        val listaTarefas = tarefasRepositorio.recuperarTarefas().collectAsState(mutableListOf()).value
-
         LazyColumn(
             modifier = Modifier.padding(it)
         ) {
             itemsIndexed(listaTarefas){position, _ ->
-                TarefaItem(position = position, listaTarefas = listaTarefas, context = context, navController = navController)
+                TarefaItem(position = position, listaTarefas = listaTarefas, context = context, navController = navController, viewModel)
             }
 
         }

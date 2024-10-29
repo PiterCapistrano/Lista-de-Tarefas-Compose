@@ -2,13 +2,13 @@ package com.pitercapistrano.listadetarefacompose.datasource
 
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.toObject
 import com.pitercapistrano.listadetarefacompose.model.Tarefa
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Inject
 
-class DataSource {
+class DataSource @Inject constructor(){
 
     private val db = FirebaseFirestore.getInstance()
 

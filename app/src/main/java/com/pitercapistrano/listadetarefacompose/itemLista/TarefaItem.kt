@@ -27,15 +27,16 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.pitercapistrano.listadetarefacompose.R
 import com.pitercapistrano.listadetarefacompose.model.Tarefa
-import com.pitercapistrano.listadetarefacompose.repositorio.TarefasRepositorio
 import com.pitercapistrano.listadetarefacompose.ui.theme.DarkGreen
 import com.pitercapistrano.listadetarefacompose.ui.theme.DarkRed
 import com.pitercapistrano.listadetarefacompose.ui.theme.DarkYellow
 import com.pitercapistrano.listadetarefacompose.ui.theme.Green
 import com.pitercapistrano.listadetarefacompose.ui.theme.Red
+import com.pitercapistrano.listadetarefacompose.viewModel.TarefasViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -44,7 +45,8 @@ fun TarefaItem(
     position: Int,
     listaTarefas: MutableList<Tarefa>,
     context: Context,
-    navController: NavController
+    navController: NavController,
+    viewModel: TarefasViewModel = hiltViewModel()
 ){
 
     val tituloTarefa = listaTarefas[position].tarefa
@@ -53,8 +55,6 @@ fun TarefaItem(
     val tarefaConcluida = listaTarefas[position].checkTarefa
 
     val scope = rememberCoroutineScope()
-
-    val tarefasRepositorio = TarefasRepositorio()
 
     var isChecked by remember {
         mutableStateOf(tarefaConcluida)
@@ -65,7 +65,7 @@ fun TarefaItem(
         alertDialog.setTitle("Deletar Tarefa")
             .setMessage("Deseja excluir a tarefa?")
             .setPositiveButton("Sim"){_,_ ->
-                tarefasRepositorio.deletarTarefa(tituloTarefa.toString())
+                viewModel.deletarTarefa(tituloTarefa.toString())
 
                 scope.launch(Dispatchers.Main) {
                     listaTarefas.removeAt(position)
@@ -177,9 +177,9 @@ fun TarefaItem(
                     scope.launch(Dispatchers.IO){
                         if (isChecked!!){
                             isChecked = true
-                            tarefasRepositorio.atualizarTarefa(tituloTarefa!!, true)
+                            viewModel.atualizarTarefa(tituloTarefa!!, true)
                         }else{
-                            tarefasRepositorio.atualizarTarefa(tituloTarefa!!, false)
+                            viewModel.atualizarTarefa(tituloTarefa!!, false)
                         }
                     }
                     scope.launch(Dispatchers.Main){

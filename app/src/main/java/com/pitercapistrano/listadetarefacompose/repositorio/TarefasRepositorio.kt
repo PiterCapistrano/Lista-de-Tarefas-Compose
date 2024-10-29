@@ -2,12 +2,14 @@ package com.pitercapistrano.listadetarefacompose.repositorio
 
 import com.pitercapistrano.listadetarefacompose.datasource.DataSource
 import com.pitercapistrano.listadetarefacompose.model.Tarefa
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
 
-class TarefasRepositorio() {
+@ViewModelScoped
+class TarefasRepositorio @Inject constructor(private val dataSource: DataSource) {
 
-    private val dataSource = DataSource()
     fun salvarTarefa(tarefa: String, descricao: String, prioridade: Int, checkTarefas: Boolean){
         dataSource.salvarTarefa(tarefa, descricao, prioridade, checkTarefas)
     }
