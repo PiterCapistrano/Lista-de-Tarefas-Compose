@@ -17,6 +17,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,6 +38,8 @@ fun ListaTarefas(
 ){
 
     val tarefasRepositorio = TarefasRepositorio()
+
+    val context = LocalContext.current
 
     Scaffold(
         topBar = {
@@ -73,7 +76,7 @@ fun ListaTarefas(
             modifier = Modifier.padding(it)
         ) {
             itemsIndexed(listaTarefas){position, _ ->
-                TarefaItem(position = position, listaTarefas = listaTarefas)
+                TarefaItem(position = position, listaTarefas = listaTarefas, context = context, navController = navController)
             }
 
         }

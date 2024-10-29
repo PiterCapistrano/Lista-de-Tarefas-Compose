@@ -1,5 +1,8 @@
 package com.pitercapistrano.listadetarefacompose.itemLista
 
+import android.app.AlertDialog
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -11,6 +14,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -18,23 +22,52 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.NavController
 import com.pitercapistrano.listadetarefacompose.R
 import com.pitercapistrano.listadetarefacompose.model.Tarefa
+import com.pitercapistrano.listadetarefacompose.repositorio.TarefasRepositorio
 import com.pitercapistrano.listadetarefacompose.ui.theme.DarkGreen
 import com.pitercapistrano.listadetarefacompose.ui.theme.DarkRed
 import com.pitercapistrano.listadetarefacompose.ui.theme.DarkYellow
 import com.pitercapistrano.listadetarefacompose.ui.theme.Green
 import com.pitercapistrano.listadetarefacompose.ui.theme.Red
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun TarefaItem(
     position: Int,
-    listaTarefas: MutableList<Tarefa>
+    listaTarefas: MutableList<Tarefa>,
+    context: Context,
+    navController: NavController
 ){
 
-    val tituloTarefa = listaTarefas[position].titulo
+    val tituloTarefa = listaTarefas[position].tarefa
     val descricaoTarefa = listaTarefas[position].descricao
     val prioridadeTarefa = listaTarefas[position].prioridade
+
+    val scope = rememberCoroutineScope()
+
+    val tarefasRepositorio = TarefasRepositorio()
+
+    fun dialogDeletar(){
+        val alertDialog = AlertDialog.Builder(context)
+        alertDialog.setTitle("Deletar Tarefa")
+            .setMessage("Deseja excluir a tarefa?")
+            .setPositiveButton("Sim"){_,_ ->
+                tarefasRepositorio.deletarTarefa(tituloTarefa.toString())
+
+                scope.launch(Dispatchers.Main) {
+                    listaTarefas.removeAt(position)
+                    navController.navigate("listaTarefas")
+                    Toast.makeText(context, "Sucesso ao deletar a tarefa!", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton("Não"){_,_ ->
+
+            }
+            .show()
+    }
 
     var nivelPrioridade: String = when(prioridadeTarefa){
         0 -> {"Sem Prioridade"}
@@ -105,7 +138,9 @@ fun TarefaItem(
 
             }
             IconButton(
-                onClick = { /*TODO*/ },
+                onClick = {
+                          dialogDeletar()
+                },
                 modifier = Modifier.constrainAs(btDeletar){
                     top.linkTo(txtDescricao.bottom, 20.dp)
                     start.linkTo(cardPrioridade.end, 30.dp)
