@@ -39,7 +39,7 @@ fun LoginEditText(
         },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(20.dp, 0.dp, 20.dp, 10.dp),
+            .padding(20.dp, 0.dp, 20.dp, 5.dp),
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedTextColor = Color.Black,
             unfocusedTextColor = Color.Black,

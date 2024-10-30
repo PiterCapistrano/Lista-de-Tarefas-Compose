@@ -3,6 +3,7 @@ package com.pitercapistrano.listadetarefacompose.view
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -10,6 +11,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,13 +23,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.pitercapistrano.listadetarefacompose.R
+import com.pitercapistrano.listadetarefacompose.componentes.BotaoLogin
 import com.pitercapistrano.listadetarefacompose.componentes.LoginEditText
 import com.pitercapistrano.listadetarefacompose.ui.theme.DarkPBlue
 import com.pitercapistrano.listadetarefacompose.ui.theme.DarkPink
@@ -50,10 +56,14 @@ fun Login(
         mutableStateOf(false)
     }
 
-    var icon = if (visibilidadeSenha){
-        painterResource(id = R.drawable.baseline_visibility)
-    }else{
+    var mensagem by remember {
+        mutableStateOf("")
+    }
+
+    val icon = if (visibilidadeSenha){
         painterResource(id = R.drawable.baseline_visibility_off_24)
+    }else{
+        painterResource(id = R.drawable.baseline_visibility)
     }
 
     Scaffold(
@@ -66,10 +76,10 @@ fun Login(
             )
         ),
         containerColor = Color.Transparent
-    ) {
+    ) {view ->
         Column(
             modifier = Modifier
-                .padding(it)
+                .padding(view)
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.Center,
@@ -107,6 +117,29 @@ fun Login(
                     PasswordVisualTransformation()
                 }
             )
+            
+            Text(text = mensagem, fontSize = 18.sp, fontWeight = FontWeight.Medium, color = Color.White)
+
+            BotaoLogin(
+                onClick = {
+
+                },
+                text = "Entrar"
+            )
+            
+            Spacer(modifier = Modifier.padding(20.dp))
+
+            TextButton(
+                onClick = { navController.navigate("telaCadastro") }
+            ) {
+                Text(
+                    text = "Não tem conta? Cadastre-se agora!",
+                    color = Color.White,
+                    fontSize = 18.sp
+                )
+            }
+
+            Spacer(modifier = Modifier.padding(0.dp,0.dp,0.dp,20.dp))
         }
     }
 }

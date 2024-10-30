@@ -20,3 +20,8 @@ val DarkRed = Color(0xFFFF1100)
 
 val DarkPink = Color(0xFFFC466B)
 val DarkPBlue = Color(0xFF3F5eFB)
+
+val cor1 = Color(0xFF03001E)
+val cor2 = Color(0xFF7303C0)
+val cor3 = Color(0xFFEC38BC)
+val cor4 = Color(0xFFFDEFF9)
