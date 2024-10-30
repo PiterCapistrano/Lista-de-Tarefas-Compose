@@ -17,3 +17,6 @@ val Yellow = Color(0xFFFFC107)
 val DarkYellow = Color(0xFFFFEB3B)
 val Red = Color(0xFFFF0000)
 val DarkRed = Color(0xFFFF1100)
+
+val DarkPink = Color(0xFFFC466B)
+val DarkPBlue = Color(0xFF3F5eFB)

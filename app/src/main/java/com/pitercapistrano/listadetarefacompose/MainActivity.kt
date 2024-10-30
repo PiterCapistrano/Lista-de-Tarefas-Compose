@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 val tarefasViewModel: TarefasViewModel = hiltViewModel()
                 
-                NavHost(navController = navController, startDestination =  "listaTarefas"){
+                NavHost(navController = navController, startDestination =  "login"){
 
                     composable(
                         route = "login"
