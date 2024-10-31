@@ -1,5 +1,6 @@
 package com.pitercapistrano.listadetarefacompose.view
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -30,17 +32,20 @@ import androidx.navigation.NavController
 import com.pitercapistrano.listadetarefacompose.R
 import com.pitercapistrano.listadetarefacompose.componentes.BotaoLogin
 import com.pitercapistrano.listadetarefacompose.componentes.LoginEditText
+import com.pitercapistrano.listadetarefacompose.listener.ListenerAuth
 import com.pitercapistrano.listadetarefacompose.ui.theme.cor1
 import com.pitercapistrano.listadetarefacompose.ui.theme.cor2
 import com.pitercapistrano.listadetarefacompose.ui.theme.cor3
 import com.pitercapistrano.listadetarefacompose.ui.theme.cor4
-import com.pitercapistrano.listadetarefacompose.viewModel.TarefasViewModel
+import com.pitercapistrano.listadetarefacompose.viewModel.AuthViewModel
 
 @Composable
 fun TelaCadastro(
     navController: NavController,
-    viewModel: TarefasViewModel = hiltViewModel()
+    authViewModel: AuthViewModel = hiltViewModel()
 ){
+
+    val context = LocalContext.current
 
     var nome by remember {
         mutableStateOf("")
@@ -158,7 +163,21 @@ fun TelaCadastro(
 
             BotaoLogin(
                 onClick = {
+                    authViewModel.cadastro(nome, email, senha, confirmarSenha, object : ListenerAuth{
+                        override fun onSucess(mensagem: String, tela: String) {
+                            Toast.makeText(context,mensagem, Toast.LENGTH_SHORT).show()
+                            navController.navigate(tela)
+                        }
 
+                        override fun onFailure(erro: String) {
+                            mensagem = erro
+                        }
+
+                        override fun erroSenha(erroSenha: String) {
+                            mensagem = erroSenha
+                        }
+
+                    })
                 },
                 text = "Cadastrar"
             )

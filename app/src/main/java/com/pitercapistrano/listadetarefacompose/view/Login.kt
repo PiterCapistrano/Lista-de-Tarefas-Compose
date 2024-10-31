@@ -1,14 +1,19 @@
 package com.pitercapistrano.listadetarefacompose.view
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -34,14 +39,16 @@ import androidx.navigation.NavController
 import com.pitercapistrano.listadetarefacompose.R
 import com.pitercapistrano.listadetarefacompose.componentes.BotaoLogin
 import com.pitercapistrano.listadetarefacompose.componentes.LoginEditText
+import com.pitercapistrano.listadetarefacompose.ui.theme.Blue
 import com.pitercapistrano.listadetarefacompose.ui.theme.DarkPBlue
 import com.pitercapistrano.listadetarefacompose.ui.theme.DarkPink
+import com.pitercapistrano.listadetarefacompose.viewModel.AuthViewModel
 import com.pitercapistrano.listadetarefacompose.viewModel.TarefasViewModel
 
 @Composable
 fun Login(
     navController: NavController,
-    viewModel: TarefasViewModel = hiltViewModel()
+    authViewModel: AuthViewModel = hiltViewModel()
 ){
 
     var email by remember {
@@ -126,6 +133,25 @@ fun Login(
                 },
                 text = "Entrar"
             )
+
+            Button(
+                modifier = Modifier
+                    .padding(20.dp, 20.dp, 20.dp, 0.dp),
+                onClick = {  },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.White
+                ),
+                shape = RoundedCornerShape(10.dp)
+                ) {
+                Image(painter = painterResource(id = R.drawable.google72), contentDescription = "Simbulo da google" )
+                Text(
+                    text = "Entrar com uma conta Google",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Blue,
+                    modifier = Modifier.padding(10.dp, 0.dp)
+                    )
+            }
             
             Spacer(modifier = Modifier.padding(20.dp))
 

@@ -12,6 +12,7 @@ import com.pitercapistrano.listadetarefacompose.view.ListaTarefas
 import com.pitercapistrano.listadetarefacompose.view.Login
 import com.pitercapistrano.listadetarefacompose.view.SalvarTarefas
 import com.pitercapistrano.listadetarefacompose.view.TelaCadastro
+import com.pitercapistrano.listadetarefacompose.viewModel.AuthViewModel
 import com.pitercapistrano.listadetarefacompose.viewModel.TarefasViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,19 +25,20 @@ class MainActivity : ComponentActivity() {
                 
                 val navController = rememberNavController()
                 val tarefasViewModel: TarefasViewModel = hiltViewModel()
+                val authViewModel: AuthViewModel = hiltViewModel()
                 
                 NavHost(navController = navController, startDestination =  "login"){
 
                     composable(
                         route = "login"
                     ){
-                        Login(navController, tarefasViewModel)
+                        Login(navController, authViewModel)
                     }
 
                     composable(
                         route = "telaCadastro"
                     ){
-                        TelaCadastro(navController, tarefasViewModel)
+                        TelaCadastro(navController, authViewModel)
                     }
 
                     composable(
