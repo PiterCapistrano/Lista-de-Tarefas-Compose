@@ -2,6 +2,7 @@ package com.pitercapistrano.listadetarefacompose.datasource
 
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.GoogleAuthProvider
@@ -88,6 +89,25 @@ class Auth @Inject constructor() {
                 }
             } else {
                 listenerAuth.onFailure("Erro ao autenticar com Google.")
+            }
+        }
+    }
+
+    fun login(email: String, senha: String, listenerAuth: ListenerAuth){
+        if (email.isEmpty() || senha.isEmpty()){
+            listenerAuth.onFailure("Preencha todos os campos!")
+        }else{
+            auth.signInWithEmailAndPassword(email, senha).addOnCompleteListener {autenticacao ->
+                if (autenticacao.isSuccessful){
+                    listenerAuth.onSucess("Sucesso ao fazer o login!", "listaTarefas")
+                }
+            }.addOnFailureListener {exception ->
+                val erro = when(exception){
+                    is FirebaseAuthInvalidCredentialsException -> "E-mail ou Senha incorreta!"
+                    is FirebaseNetworkException -> "Sem conexão com a internet!"
+                    else -> "E-mail inválido!"
+                }
+                listenerAuth.onFailure(erro)
             }
         }
     }

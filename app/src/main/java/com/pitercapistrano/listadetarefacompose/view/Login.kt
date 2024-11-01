@@ -2,6 +2,7 @@ package com.pitercapistrano.listadetarefacompose.view
 
 import android.app.Activity
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -101,16 +102,17 @@ fun Login(
             try {
                 val account = task.getResult(ApiException::class.java)!!
                 authViewModel.signInWithGoogle(account.idToken ?: "", object : ListenerAuth {
-                    override fun onSucess(message: String, navigation: String) {
-                        navController.navigate("listaTarefas") // Navegue após o login bem-sucedido
+                    override fun onSucess(mensagem: String, tela: String) {
+                        Toast.makeText(context,mensagem,Toast.LENGTH_SHORT).show()
+                        navController.navigate(tela) // Navegue após o login bem-sucedido
                     }
 
-                    override fun onFailure(message: String) {
-                        Log.e("Login", message)
+                    override fun onFailure(erro: String) {
+                        Log.e("Login", erro)
                     }
 
-                    override fun erroSenha(message: String) {
-                        Log.e("Login", message)
+                    override fun erroSenha(erroSenha: String) {
+                        Log.e("Login", erroSenha)
                     }
                 })
             } catch (e: ApiException) {
@@ -178,7 +180,21 @@ fun Login(
 
             BotaoLogin(
                 onClick = {
+                   authViewModel.login(email, senha, object : ListenerAuth{
+                       override fun onSucess(mensagem: String, tela: String) {
+                           Toast.makeText(context,mensagem,Toast.LENGTH_SHORT).show()
+                           navController.navigate("listaTarefas")
+                       }
 
+                       override fun onFailure(erro: String) {
+                           mensagem = erro
+                       }
+
+                       override fun erroSenha(erroSenha: String) {
+                           TODO("Not yet implemented")
+                       }
+
+                   })
                 },
                 text = "Entrar"
             )

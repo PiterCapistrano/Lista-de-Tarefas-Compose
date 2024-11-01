@@ -4,9 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
 import com.pitercapistrano.listadetarefacompose.listener.ListenerAuth
 import com.pitercapistrano.listadetarefacompose.repositorio.AuthRepositorio
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,14 +20,24 @@ class AuthViewModel @Inject constructor(
     val user: LiveData<FirebaseUser?> get() = _user
 
     fun cadastro(nome: String, email: String, senha: String, confirmarSenha: String, listenerAuth: ListenerAuth) {
-        authRepositorio.cadastro(nome, email, senha, confirmarSenha, listenerAuth)
-        // Atualize o usuário logado
-        _user.value = authRepositorio.getCurrentUser()  // Atribuindo o FirebaseUser completo
+        viewModelScope.launch {
+            authRepositorio.cadastro(nome, email, senha, confirmarSenha, listenerAuth)
+            // Atualize o usuário logado
+            _user.value = authRepositorio.getCurrentUser()  // Atribuindo o FirebaseUser completo
+        }
     }
 
     fun signInWithGoogle(idToken: String, listenerAuth: ListenerAuth) {
-        authRepositorio.signInWithGoogle(idToken, listenerAuth)
+        viewModelScope.launch {
+            authRepositorio.signInWithGoogle(idToken, listenerAuth)
+        }
     }
 
     fun getCurrentUser() = authRepositorio.getCurrentUser()
+
+    fun login(email: String, senha: String, listenerAuth: ListenerAuth){
+        viewModelScope.launch {
+            authRepositorio.login(email, senha, listenerAuth)
+        }
+    }
 }

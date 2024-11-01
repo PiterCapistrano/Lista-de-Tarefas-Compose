@@ -20,4 +20,8 @@ class AuthRepositorio @Inject constructor(private val auth: Auth, private val fi
     }
 
     fun getCurrentUser() = firebaseAuth.currentUser
+
+    fun login(email: String, senha: String, listenerAuth: ListenerAuth){
+        auth.login(email, senha, listenerAuth)
+    }
 }
