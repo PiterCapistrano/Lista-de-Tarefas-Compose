@@ -1,6 +1,7 @@
 package com.pitercapistrano.listadetarefacompose.datasource
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.pitercapistrano.listadetarefacompose.listener.ListenerAuth
 import javax.inject.Inject
@@ -44,4 +45,39 @@ class Auth @Inject constructor() {
 
     }
 
+    // Novo método para login com Google
+    fun signInWithGoogle(idToken: String, listenerAuth: ListenerAuth) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        auth.signInWithCredential(credential).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val usuarioID = auth.currentUser?.uid
+                val nome = auth.currentUser?.displayName
+                val email = auth.currentUser?.email
+
+                if (usuarioID != null) {
+                    db.collection("usuarios").document(usuarioID).get().addOnSuccessListener { document ->
+                        if (!document.exists()) {
+                            val dadosUsuarioMap = hashMapOf(
+                                "nome" to nome,
+                                "email" to email,
+                                "usuarioID" to usuarioID
+                            )
+
+                            db.collection("usuarios").document(usuarioID).set(dadosUsuarioMap).addOnCompleteListener {
+                                listenerAuth.onSucess("Sucesso ao cadastrar usuário via Google!", "listaTarefas") // Navega após o cadastro
+                            }.addOnFailureListener {
+                                listenerAuth.onFailure("Erro ao salvar dados do usuário.")
+                            }
+                        } else {
+                            listenerAuth.onSucess("Login realizado com sucesso!", "listaTarefas") // Navega após o login
+                        }
+                    }.addOnFailureListener {
+                        listenerAuth.onFailure("Erro ao acessar dados do usuário.")
+                    }
+                }
+            } else {
+                listenerAuth.onFailure("Erro ao autenticar com Google.")
+            }
+        }
+    }
 }
