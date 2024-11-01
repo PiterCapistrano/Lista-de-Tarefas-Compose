@@ -1,6 +1,9 @@
 package com.pitercapistrano.listadetarefacompose.datasource
 
+import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.pitercapistrano.listadetarefacompose.listener.ListenerAuth
@@ -40,6 +43,14 @@ class Auth @Inject constructor() {
                         listenerAuth.onFailure("Erro inesperado!")
                     }
                 }
+            }.addOnFailureListener {exception ->
+                val erro = when(exception){
+                    is FirebaseAuthUserCollisionException -> "Está conta já foi cadastrada!"
+                    is FirebaseAuthWeakPasswordException -> "A senha deve ter no mínimo 6 caracteres!"
+                    is FirebaseNetworkException -> "Sem conexão com a internet!"
+                    else -> "E-mail inválido!"
+                }
+                listenerAuth.onFailure(erro)
             }
         }
 
