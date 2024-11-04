@@ -24,7 +24,7 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             authRepositorio.cadastro(nome, email, senha, confirmarSenha, listenerAuth)
             // Atualize o usuário logado
-            _user.value = authRepositorio.getCurrentUser()  // Atribuindo o FirebaseUser completo
+            _user.value = getCurrentUser()  // Atribuindo o FirebaseUser completo
         }
     }
 
@@ -34,7 +34,7 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    fun getCurrentUser() = authRepositorio.getCurrentUser()
+    private fun getCurrentUser() = authRepositorio.getCurrentUser()
 
     fun login(email: String, senha: String, listenerAuth: ListenerAuth){
         viewModelScope.launch {

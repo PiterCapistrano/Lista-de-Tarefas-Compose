@@ -1,5 +1,6 @@
 package com.pitercapistrano.listadetarefacompose.view
 
+import android.app.AlertDialog
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -9,6 +10,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -25,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.auth.FirebaseAuth
 import com.pitercapistrano.listadetarefacompose.R
 import com.pitercapistrano.listadetarefacompose.itemLista.TarefaItem
 import com.pitercapistrano.listadetarefacompose.ui.theme.Blue
@@ -48,7 +51,26 @@ fun ListaTarefas(
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = Blue,
                     titleContentColor = Color.White
-                )
+                ),
+                actions = {
+                    TextButton(
+                        onClick = {
+
+                              val alertDialog = AlertDialog.Builder(context)
+                                alertDialog.setTitle("Deslogar!")
+                                alertDialog.setMessage("Deseja sari do Aplicativo?")
+                                alertDialog.setPositiveButton("Sim"){_,_ ->
+                                   FirebaseAuth.getInstance().signOut()
+                                    navController.navigate("login")
+                                }
+                                alertDialog.setNegativeButton("Não"){_,_ ->
+
+                                }.show()
+                        },
+                    ) {
+                        Text(text = "Sair", fontSize = 16.sp, color = Color.White)
+                    }
+                }
             )
         },
         
