@@ -24,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -122,7 +123,14 @@ fun Login(
         }
     }
 
+    val usuarioLogado = authViewModel.verificarLogin().collectAsState(initial = false).value
 
+    // verifica se usuário está logado apenas uma vez, evitando loop infinito
+    LaunchedEffect(usuarioLogado) {
+        if (usuarioLogado){
+            navController.navigate("listaTarefas")
+        }
+    }
 
     Scaffold(
         modifier = Modifier.background(

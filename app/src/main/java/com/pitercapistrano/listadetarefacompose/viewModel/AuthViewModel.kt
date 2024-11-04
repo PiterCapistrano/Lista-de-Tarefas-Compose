@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.pitercapistrano.listadetarefacompose.listener.ListenerAuth
 import com.pitercapistrano.listadetarefacompose.repositorio.AuthRepositorio
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -39,5 +40,9 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             authRepositorio.login(email, senha, listenerAuth)
         }
+    }
+
+    fun verificarLogin(): Flow<Boolean>{
+        return authRepositorio.verificarLogin()
     }
 }

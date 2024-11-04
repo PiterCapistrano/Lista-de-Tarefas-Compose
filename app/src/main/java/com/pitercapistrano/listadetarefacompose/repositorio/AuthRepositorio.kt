@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.pitercapistrano.listadetarefacompose.datasource.Auth
 import com.pitercapistrano.listadetarefacompose.listener.ListenerAuth
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -23,5 +24,9 @@ class AuthRepositorio @Inject constructor(private val auth: Auth, private val fi
 
     fun login(email: String, senha: String, listenerAuth: ListenerAuth){
         auth.login(email, senha, listenerAuth)
+    }
+
+    fun verificarLogin (): Flow<Boolean>{
+        return auth.verificarLogin()
     }
 }

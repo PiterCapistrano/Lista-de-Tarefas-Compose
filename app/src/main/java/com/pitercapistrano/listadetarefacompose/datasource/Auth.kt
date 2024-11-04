@@ -8,12 +8,19 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.pitercapistrano.listadetarefacompose.listener.ListenerAuth
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 class Auth @Inject constructor() {
 
     val auth = FirebaseAuth.getInstance()
     val db = FirebaseFirestore.getInstance()
+
+    val _verificarUsuarioLogado = MutableStateFlow<Boolean>(false)
+    val verificarUsuarioLogado: StateFlow<Boolean> = _verificarUsuarioLogado
+
     fun cadastro(
         nome:String,
         email: String,
@@ -110,5 +117,12 @@ class Auth @Inject constructor() {
                 listenerAuth.onFailure(erro)
             }
         }
+    }
+
+    fun verificarLogin(): Flow<Boolean> {
+        val usuarioLogado = FirebaseAuth.getInstance().currentUser
+
+        _verificarUsuarioLogado.value = usuarioLogado != null
+        return verificarUsuarioLogado
     }
 }
