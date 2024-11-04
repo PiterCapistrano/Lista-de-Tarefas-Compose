@@ -44,6 +44,8 @@ fun ListaTarefas(
 
     val listaTarefas = viewModel.recuperarTarefas().collectAsState(mutableListOf()).value
 
+    val nomeUsuario = viewModel.perfilUsuario().collectAsState(initial = "").value
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -53,6 +55,9 @@ fun ListaTarefas(
                     titleContentColor = Color.White
                 ),
                 actions = {
+                    
+                    Text(text = nomeUsuario, fontSize = 16.sp, fontWeight = FontWeight.Medium, color = Color.White)
+                    
                     TextButton(
                         onClick = {
 
