@@ -22,6 +22,8 @@ class DataSource @Inject constructor(){
 
     fun salvarTarefa(tarefa: String, descricao: String, prioridade: Int, checkTarefa: Boolean) {
 
+        val usuarioID = FirebaseAuth.getInstance().currentUser?.uid.toString()
+
         val tarefaMap = hashMapOf(
             "tarefa" to tarefa,
             "descricao" to descricao,
@@ -29,7 +31,9 @@ class DataSource @Inject constructor(){
             "checkTarefa" to checkTarefa
         )
 
-        db.collection("tarefas").document(tarefa).set(tarefaMap).addOnCompleteListener {
+        db.collection("tarefas").document(usuarioID)
+            .collection("tarefas_Usuario").document(tarefa)
+            .set(tarefaMap).addOnCompleteListener {
 
         }.addOnFailureListener {
             Log.e("ErroDB", "Erro ao enviar dados para a Firestore!")
@@ -38,22 +42,30 @@ class DataSource @Inject constructor(){
 
     fun recuperarTarefas(): Flow<MutableList<Tarefa>>{
 
+        val usuarioID = FirebaseAuth.getInstance().currentUser?.uid.toString()
+
         val listaTarefas: MutableList<Tarefa> = mutableListOf()
 
-        db.collection("tarefas").get().addOnCompleteListener{querySnapshot ->
+        db.collection("tarefas").document(usuarioID)
+            .collection("tarefas_Usuario").get().addOnCompleteListener{querySnapshot ->
             if (querySnapshot.isSuccessful){
                 for (documento in querySnapshot.result){
                     val tarefa = documento.toObject(Tarefa::class.java)
                     listaTarefas.add(tarefa)
-                    _todastarefas.value = listaTarefas
                 }
+                _todastarefas.value = listaTarefas
             }
         }
         return todastarefas
     }
 
     fun deletarTarefa(tarefa: String){
-        db.collection("tarefas").document(tarefa).delete().addOnCompleteListener {
+
+        val usuarioID = FirebaseAuth.getInstance().currentUser?.uid.toString()
+
+        db.collection("tarefas").document(usuarioID)
+            .collection("tarefas_Usuario").document(tarefa)
+            .delete().addOnCompleteListener {
 
         }.addOnFailureListener {
 
@@ -61,7 +73,12 @@ class DataSource @Inject constructor(){
     }
 
     fun atualizarTarefa(tarefa: String, checkTarefa: Boolean){
-        db.collection("tarefas").document(tarefa).update("checkTarefa", checkTarefa).addOnCompleteListener {
+
+        val usuarioID = FirebaseAuth.getInstance().currentUser?.uid.toString()
+
+        db.collection("tarefas").document(usuarioID)
+            .collection("tarefas_Usuario").document(tarefa)
+            .update("checkTarefa", checkTarefa).addOnCompleteListener {
 
         }.addOnFailureListener {
 
@@ -69,6 +86,7 @@ class DataSource @Inject constructor(){
     }
 
     fun perfilUsuario(): Flow<String>{
+
         val usuarioID = FirebaseAuth.getInstance().currentUser?.uid.toString()
 
         db.collection("usuarios").document(usuarioID).get().addOnCompleteListener {documentSnapShot ->
